@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Recherche de Fruits</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background: linear-gradient(135deg, #ffecd2, #fcb69f);
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      color: #ff5e62;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+    }
+
+    .search-box {
+      width: 500px;
+      max-width: 90%;
+      position: relative;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px 22px;
+      border-radius: 50px;
+      border: 2px solid #ff5e62;
+      font-size: 1.1rem;
+      outline: none;
+      box-shadow: 0px 4px 10px rgba(0,0,0,0.15);
+      transition: all 0.3s ease;
+    }
+
+    input:focus {
+      border-color: #ff9966;
+      box-shadow: 0px 6px 15px rgba(255, 94, 98, 0.3);
+    }
+
+    ul {
+      list-style: none;
+      margin: 10px 0 0;
+      padding: 0;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0px 4px 10px rgba(0,0,0,0.15);
+      max-height: 220px;
+      overflow-y: auto;
+      display: none;
+      position: absolute;
+      width: 100%;
+      z-index: 10;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    ul li {
+      padding: 12px;
+      cursor: pointer;
+      border-bottom: 1px solid #f1f1f1;
+      transition: background 0.3s;
+    }
+
+    ul li:last-child {
+      border-bottom: none;
+    }
+
+    ul li:hover {
+      background: #ffe2e2;
+      color: #d6336c;
+      font-weight: bold;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <h1>🍇 Recherche de Fruits</h1>
+  <div class="search-box">
+    <input type="text" id="search" placeholder="Cherche un fruit...">
+    <ul id="results"></ul>
+  </div>
+
+  <script>
+    const fruits = [
+      "Pomme", "Banane", "Orange", "Mangue", "Ananas", "Fraise", "Cerise", "Pastèque", "Melon", "Papaye",
+      "Kiwi", "Raisin", "Framboise", "Mûre", "Goyave", "Litchi", "Fruit de la passion", "Grenade",
+      "Noix de coco", "Pêche", "Abricot", "Poire", "Prune", "Citron", "Lime", "Kaki", "Figues",
+      "Durian", "Ramboutan", "Carambole", "Jacquier", "Pomelo,"
+    ];
+
+    const searchInput = document.getElementById("search");
+    const resultsList = document.getElementById("results");
+
+    searchInput.addEventListener("input", function() {
+      const query = this.value.toLowerCase();
+      resultsList.innerHTML = "";
+      if (query) {
+        const filtered = fruits.filter(fruit => fruit.toLowerCase().includes(query));
+        if (filtered.length > 0) {
+          resultsList.style.display = "block";
+          filtered.forEach(fruit => {
+            const li = document.createElement("li");
+            li.textContent = fruit;
+            li.onclick = () => {
+              const wikiFruit = fruit.replace(/\s+/g, "_");
+              const url = `https://fr.wikipedia.org/wiki/${wikiFruit}`;
+              window.open(url, "_blank");
+              resultsList.style.display = "none";
+            };
+            resultsList.appendChild(li);
+          });
+        } else {
+          resultsList.style.display = "none";
+        }
+      } else {
+        resultsList.style.display = "none";
+      }
+    });
+  </script>
+</body>
+</html>
